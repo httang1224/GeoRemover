@@ -64,9 +64,13 @@ For stage2:appearance rendering
 python Flux_fill_d2i.py
 ```
 ### Checkpoints
-[stage1:geometry removal](https://drive.google.com/file/d/1y6vnxqnFTiO6sxoKDBkvFbAeniHFka89/view?usp=sharing)
+Hugging Face:
+[stage1:geometry removal and stage2:appearance rendering](https://huggingface.co/buxiangzhiren/GeoRemover)
 
-[stage2:appearance rendering](https://drive.google.com/file/d/1U8rp1hqOswQB-0T0fh2aDQu-o1GLfd6E/view?usp=sharing)
+
+Google drive:
+[stage1:geometry removal](https://drive.google.com/file/d/1y6vnxqnFTiO6sxoKDBkvFbAeniHFka89/view?usp=sharing)
+ and [stage2:appearance rendering](https://drive.google.com/file/d/1U8rp1hqOswQB-0T0fh2aDQu-o1GLfd6E/view?usp=sharing)
 
 
 ###  Acknowledgement
