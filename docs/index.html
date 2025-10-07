@@ -72,6 +72,32 @@
       cursor:pointer; border:1px solid #e5e7eb; background:#f8fafc; color:#111827;
       padding:6px 10px; border-radius:10px; font-weight:600; font-size:12px;
     }
+     /* 虚化播放按钮：默认半透明+轻模糊；悬停或获得焦点时恢复可读性 */
+    .ba .btn-mini.play{
+      opacity: .35;
+      filter: blur(0.3px);
+      transition: opacity .15s ease, filter .15s ease;
+    }
+    .ba:hover .btn-mini.play,
+    .ba:focus-within .btn-mini.play{
+      opacity: .85;
+      filter: none;
+    }
+    /* 两个按钮都默认虚化；悬停或获得焦点时恢复 */
+    .ba .controls .btn-mini{
+      opacity: .35;
+      filter: blur(0.3px);
+      transition: opacity .15s ease, filter .15s ease;
+    }
+
+    /* 整个卡片 hover / 焦点、或单个按钮 hover/focus 时变清晰 */
+    .ba:hover .controls .btn-mini,
+    .ba:focus-within .controls .btn-mini,
+    .ba .controls .btn-mini:hover,
+    .ba .controls .btn-mini:focus-visible{
+      opacity: .85;
+      filter: none;
+    }
 
     /* Results grid */
     .ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -211,8 +237,8 @@ removal: we first edit the scene geometric representation (in the form of a dept
           <img class="bot" alt="img${aIdx}" src="${url(aIdx)}" onerror="this.style.display='none'">
           <img class="top" alt="img${bIdx}" src="${url(bIdx)}" onerror="this.style.display='none'">
           <div class="divider"></div>
-          <div class="label left">img${aIdx}</div>
-          <div class="label right">img${bIdx}</div>
+          // <div class="label left">img${aIdx}</div>
+          // <div class="label right">img${bIdx}</div>
           <input class="scrubber" type="range" min="0" max="100" value="50" aria-label="transition">
           <div class="controls">
             <button class="btn-mini play">▶️ Play</button>
