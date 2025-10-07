@@ -9,7 +9,7 @@
   <meta property="og:description" content="Official implementation and resources." />
   <meta property="og:type" content="website" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/cssa2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root{--ink:#0f172a;--muted:#64748b;--pill:#f1f5f9}
     *{box-sizing:border-box}
@@ -72,7 +72,7 @@
       cursor:pointer; border:1px solid #e5e7eb; background:#f8fafc; color:#111827;
       padding:6px 10px; border-radius:10px; font-weight:600; font-size:12px;
     }
-    
+
     .ba .btn-mini.play{
       opacity: .35;
       filter: blur(0.3px);
@@ -83,13 +83,14 @@
       opacity: .85;
       filter: none;
     }
-    
+
     .ba .controls .btn-mini{
       opacity: .35;
       filter: blur(0.3px);
       transition: opacity .15s ease, filter .15s ease;
     }
 
+   
     .ba:hover .controls .btn-mini,
     .ba:focus-within .controls .btn-mini,
     .ba .controls .btn-mini:hover,
@@ -98,19 +99,20 @@
       filter: none;
     }
 
-    /* Results grid */
-    .ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    @media (max-width: 900px){.ba-grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width: 600px){.ba-grid{grid-template-columns:1fr}}
+
+      /* Results grid */
+      .ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+      @media (max-width: 900px){.ba-grid{grid-template-columns:repeat(2,1fr)}}
+      @media (max-width: 600px){.ba-grid{grid-template-columns:1fr}}
 
 
-    footer{color:var(--muted);font-size:14px;padding:24px 0 48px}
+      footer{color:var(--muted);font-size:14px;padding:24px 0 48px}
 
-    /* BibTeX */
-    .bibtex{background:#0b1220;color:#e5e7eb;border-radius:12px;padding:16px;overflow:auto}
-    .bib-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-    .copy{cursor:pointer;border:1px solid #334155;background:#111827;color:#e5e7eb;padding:6px 10px;border-radius:8px;font-weight:600}
-    .copy:active{transform:translateY(1px)}
+      /* BibTeX */
+      .bibtex{background:#0b1220;color:#e5e7eb;border-radius:12px;padding:16px;overflow:auto}
+      .bib-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+      .copy{cursor:pointer;border:1px solid #334155;background:#111827;color:#e5e7eb;padding:6px 10px;border-radius:8px;font-weight:600}
+      .copy:active{transform:translateY(1px)}
   </style>
 </head>
 <body>
@@ -221,11 +223,12 @@ removal: we first edit the scene geometric representation (in the form of a dept
     }
     // -------- Before/After slider builder --------
     (function(){
-      // match：1-2, 3-4, ..., 9-10
+     
       const pairs = [[1,2],[3,4],[5,6],[7,8],[9,10],[11,12]];
       const grid  = document.getElementById('ba-grid');
       if(!grid) return;
 
+      
       const url = n => `asset/${encodeURIComponent(`img${n}.png`)}`;
 
       function makeSlider(aIdx, bIdx){
@@ -293,7 +296,6 @@ removal: we first edit the scene geometric representation (in the form of a dept
         playBtn.addEventListener('click', togglePlay);
         resetBtn.addEventListener('click', reset);
 
-       
         wrap.addEventListener('pointerdown', e=>{
           const rect = wrap.getBoundingClientRect();
           const move = ev=>{
@@ -310,14 +312,14 @@ removal: we first edit the scene geometric representation (in the form of a dept
           window.addEventListener('pointerup', up);
         });
 
-        
+      
         wrap.tabIndex = 0;
         wrap.addEventListener('keydown', e=>{
           if(e.key === 'ArrowLeft'){ setPos(Math.max(0, parseFloat(scrub.value)-2)); }
           if(e.key === 'ArrowRight'){ setPos(Math.min(100, parseFloat(scrub.value)+2)); }
         });
 
-      
+   
         setPos(50);
         return wrap;
       }
