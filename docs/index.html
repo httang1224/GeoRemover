@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GeoRemover — NeurIPS 2025 (Spotlight)</title>
+  <meta name="description" content="GeoRemover: Removing Objects and Their Causal Visual Artifacts (NeurIPS 2025 Spotlight)." />
+  <meta property="og:title" content="GeoRemover" />
+  <meta property="og:description" content="Official implementation and resources." />
+  <meta property="og:type" content="website" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#0f172a;--muted:#64748b;--pill:#f1f5f9}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Arial;color:var(--ink)}
+    .container{max-width:980px;margin:0 auto;padding:28px}
+    .hero{padding:56px 0 24px;text-align:center}
+    h1{font-size:clamp(32px,5vw,52px);line-height:1.06;margin:0 0 8px;font-weight:800}
+    h2{margin:8px 0 12px;font-weight:800}
+    .sub{color:var(--muted);font-weight:600;margin:0 0 12px}
+    .authors{margin:10px 0 6px}
+    .inst{color:var(--muted);font-size:14px}
+    .sup{font-size:.72em;vertical-align:super;margin-left:2px}
+    .badges{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0;justify-content:center}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:var(--pill);border:1px solid #e5e7eb;color:#111827;text-decoration:none;font-weight:600}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.06)}
+    .pdf-frame{width:100%;height:min(80vh,900px);border:1px solid #e5e7eb;border-radius:12px}
+    .abstract{max-width:860px;margin:0 auto;font-size:16.5px;line-height:1.75;text-align:justify;text-justify:inter-word;hyphens:auto}
+    .abstract b{font-weight:800}
+    /* New: figure blocks */
+    .fig{border:1px solid #e5e7eb;border-radius:14px;overflow:hidden}
+    .fig img{display:block;width:100%;height:auto}
+    .cap{color:var(--muted);font-size:14px;margin-top:8px}
+    /* --- Before/After sliders --- */
+    .ba-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    @media (max-width: 900px){.ba-grid{grid-template-columns:1fr}}
+    .ba{
+      position:relative; 
+      border:1px solid #e5e7eb; border-radius:14px; overflow:hidden;
+      background:#0b1220;
+      min-height:220px;
+    }
+    .ba img{
+      position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+      background:#0b1220;
+    }
+    .ba .top{ --pos:50%; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+    .ba .divider{
+      position:absolute; top:0; bottom:0; width:2px; background:white; mix-blend-difference;
+      left:calc(var(--pos,50%));
+      transform:translateX(-1px);
+      pointer-events:none;
+    }
+    .ba .scrubber{
+      position:absolute; left:0; right:0; bottom:10px; margin:0 auto; width:min(520px,90%);
+      -webkit-appearance:none; appearance:none; height:4px; background:#e5e7eb; border-radius:999px;
+    }
+    .ba .scrubber::-webkit-slider-thumb{
+      -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:#111827; border:2px solid #fff; cursor:pointer;
+    }
+    .ba .label{
+      position:absolute; top:10px; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700;
+      background:rgba(15,23,42,.75); color:#e5e7eb; backdrop-filter: blur(6px);
+    }
+    .ba .label.left{ left:10px }
+    .ba .label.right{ right:10px }
+    .ba .controls{
+      display:flex; gap:8px; align-items:center; position:absolute; right:10px; bottom:10px;
+    }
+    .ba .btn-mini{
+      cursor:pointer; border:1px solid #e5e7eb; background:#f8fafc; color:#111827;
+      padding:6px 10px; border-radius:10px; font-weight:600; font-size:12px;
+    }
+
+    /* Results grid */
+    .ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    @media (max-width: 900px){.ba-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width: 600px){.ba-grid{grid-template-columns:1fr}}
+
+
+    footer{color:var(--muted);font-size:14px;padding:24px 0 48px}
+
+    /* BibTeX */
+    .bibtex{background:#0b1220;color:#e5e7eb;border-radius:12px;padding:16px;overflow:auto}
+    .bib-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .copy{cursor:pointer;border:1px solid #334155;background:#111827;color:#e5e7eb;padding:6px 10px;border-radius:8px;font-weight:600}
+    .copy:active{transform:translateY(1px)}
+  </style>
+</head>
+<body>
+  <main class="container hero">
+    <h1>GeoRemover: Removing Objects and Their Causal Visual Artifacts</h1>
+
+    <!-- Authors with affiliation superscripts -->
+    <div class="authors">
+      <a href="#">Zixin Zhu</a><sup class="sup">1</sup>,
+      <a href="#">Haoxiang Li</a><sup class="sup">2</sup>,
+      <a href="#">Xuelu Feng</a><sup class="sup">1</sup>,
+      <a href="#">He Wu</a><sup class="sup">1</sup>,
+      <a href="#">Chunming Qiao</a><sup class="sup">1</sup>,
+      <a href="#">Junsong Yuan</a><sup class="sup">1</sup>
+    </div>
+
+    <!-- Affiliations and contact -->
+    <div class="inst"><sup class="sup">1</sup> University at Buffalo &nbsp;&nbsp; <sup class="sup">2</sup> Pixocial Technology</div>
+    <div class="inst">{ zixinzhu, xuelufen, qiao, jsyuan }@buffalo.edu &nbsp;&nbsp; haoxiang.li@pixocial.com &nbsp;&nbsp; heu199825@gmail.com</div>
+
+    <!-- Links -->
+    <div class="badges">
+      <a class="btn" href="https://arxiv.org/abs/2509.18538" target="_blank" rel="noopener">📄 Paper</a>
+      <a class="btn" href="https://github.com/buxiangzhiren/GeoRemover/tree/main" target="_blank" rel="noopener">💻 Code</a>
+      <a class="btn" href="https://huggingface.co/buxiangzhiren/GeoRemover" target="_blank" rel="noopener">🤗 Model</a>
+      <a class="btn" href="https://huggingface.co/spaces/buxiangzhiren/GeoRemover" target="_blank" rel="noopener">▶️ Demo</a>
+    </div>
+  </main>
+  <!-- 4.5) Interactive transitions (pairs: img1-12.png) -->
+  <section class="container">
+    
+    <div class="ba-grid" id="ba-grid">
+      <!-- JS will populate 5 sliders: (1↔2), (3↔4), ... , (9↔10) -->
+    </div>
+    <div class="cap">Drag the handle or press ▶️ to autoplay.</div>
+  </section>
+
+
+  <!-- 1) Teaser block (teaser.png in SAME folder) -->
+  <section class="container">
+    <h2>Overview</h2>
+    <div class="fig">
+      <img src="asset/teaser.png" alt="GeoRemover teaser visualization" onerror="this.style.display='none'">
+    </div>
+    <div class="cap">Figure 1. Comparison of object removal training paradigms. (a) Strictly mask-aligned training edits only masked regions but leaves causal visual artifacts (shadow) unaddressed. (b) Loosely
+mask-aligned training allows broader context-aware corrections but lacks clear guidance, leading to confusion and uncontrollable edits. (c) Our method decouples geometry and appearance for object
+removal: we first edit the scene geometric representation (in the form of a depth map) under strictly mask-aligned supervision, then render a realistic image where both objects and causal visual artifacts
+(shadow) are cleanly removed.</div>
+  </section>
+
+  <!-- 2) Abstract block -->
+  <section class="container">
+    <h2>Abstract</h2>
+    <p class="abstract">Towards intelligent image editing, object removal should eliminate both the target object and its causal visual artifacts, such as shadows and reflections. However, existing image appearance-based methods either follow strictly mask-aligned training and fail to remove these casual effects which are not explicitly masked, or adopt loosely mask-aligned strategies that lack controllability and may unintentionally over-erase other objects. We identify that these limitations stem from ignoring the causal relationship between an object’s geometry presence and its visual effects. To address this limitation, we propose a geometry-aware two-stage framework that decouples object removal into (1) geometry removal and (2) appearance rendering. In the first stage, we remove the object directly from the geometry (e.g., depth) using strictly mask-aligned supervision, enabling structure-aware editing with strong geometric constraints. In the second stage, we render a photorealistic RGB image conditioned on the updated geometry, where causal visual effects are considered implicitly as a result of the modified 3D geometry. To guide learning in the geometry removal stage, we introduce a preference-driven objective based on positive and negative sample pairs, encouraging the model to remove objects as well as their causal visual artifacts while avoiding new structural insertions. Extensive experiments demonstrate that our method achieves state-of-the-art performance in removing both objects and their associated artifacts on two popular benchmarks.</p>
+  </section>
+
+ 
+  <!-- 4) Results visualization (screenshots grid) -->
+  <section class="container">
+    <h2>Dataset: CausRem</h2>
+    
+    <div class="fig"><img src="asset/dataset.png" alt="Result example 1" onerror="this.style.display='none'"></div>
+   
+    <div class="cap">Figure 2. Representative annotations in CausRem. Left: shadow examples; Right: reflection examples.</div>
+  </section>
+
+  <section class="container">
+    <h2>Visualization</h2>
+    
+    <div class="fig"><img src="asset/visual_sr.png" alt="Result example 1" onerror="this.style.display='none'"></div>
+   
+    <div class="cap">Figure 3. Qualitative comparison with state-of-the-art methods on CausRem.</div>
+  </section>
+
+ 
+
+  <!-- BibTeX -->
+  <section id="bibtex" class="container">
+    <div class="bib-head">
+      <h2 style="margin:0">BibTeX</h2>
+      <button class="copy" onclick="copyBib()">Copy</button>
+    </div>
+    <pre class="bibtex" id="bib">
+@misc{zhu2025georemoverremovingobjectscausal,
+  title        = {GeoRemover: Removing Objects and Their Causal Visual Artifacts},
+  author       = {Zixin Zhu and Haoxiang Li and Xuelu Feng and He Wu and Chunming Qiao and Junsong Yuan},
+  year         = {2025},
+  eprint       = {2509.18538},
+  archivePrefix= {arXiv},
+  primaryClass = {cs.CV},
+  url          = {https://arxiv.org/abs/2509.18538}
+}
+    </pre>
+  </section>
+
+  <footer class="container">© 2025 GeoRemover authors. Replace links/assets as needed.</footer>
+
+  <script>
+    function copyBib(){
+      const el = document.getElementById('bib');
+      const text = el.innerText.trim();
+      navigator.clipboard.writeText(text).then(()=>{
+        const btn = document.querySelector('.copy');
+        const old = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(()=>btn.textContent = old, 1200);
+      });
+    }
+    // -------- Before/After slider builder --------
+    (function(){
+      // 配对：1-2, 3-4, ..., 9-10
+      const pairs = [[1,2],[3,4],[5,6],[7,8],[9,10],[11,12]];
+      const grid  = document.getElementById('ba-grid');
+      if(!grid) return;
+
+      // 工具：编码非 ASCII 文件名
+      const url = n => `asset/${encodeURIComponent(`img${n}.png`)}`;
+
+      function makeSlider(aIdx, bIdx){
+        const wrap = document.createElement('div');
+        wrap.className = 'ba';
+        wrap.innerHTML = `
+          <img class="bot" alt="img${aIdx}" src="${url(aIdx)}" onerror="this.style.display='none'">
+          <img class="top" alt="img${bIdx}" src="${url(bIdx)}" onerror="this.style.display='none'">
+          <div class="divider"></div>
+          <div class="label left">img${aIdx}</div>
+          <div class="label right">img${bIdx}</div>
+          <input class="scrubber" type="range" min="0" max="100" value="50" aria-label="transition">
+          <div class="controls">
+            <button class="btn-mini play">▶️ Play</button>
+            <button class="btn-mini reset">Reset</button>
+          </div>
+        `;
+
+        const top     = wrap.querySelector('.top');
+        const divider = wrap.querySelector('.divider');
+        const scrub   = wrap.querySelector('.scrubber');
+        const playBtn = wrap.querySelector('.play');
+        const resetBtn= wrap.querySelector('.reset');
+
+        let rafId = null, dir = 1;
+
+        function setPos(p){
+          // p: 0..100
+          top.style.setProperty('--pos', `${p}%`);
+          divider.style.left = `calc(${p}% )`;
+          scrub.value = String(p);
+        }
+
+        function onInput(){
+          cancelAnimationFrame(rafId);
+          playBtn.textContent = '▶️ Play';
+          setPos(parseFloat(scrub.value));
+        }
+
+        function animate(){
+          let p = parseFloat(scrub.value);
+          p += dir * 0.6; // 速度
+          if(p >= 100){ p=100; dir = -1; }
+          if(p <= 0){   p=0;   dir = 1;  }
+          setPos(p);
+          rafId = requestAnimationFrame(animate);
+        }
+
+        function togglePlay(){
+          if(rafId){
+            cancelAnimationFrame(rafId); rafId = null;
+            playBtn.textContent = '▶️ Play';
+          }else{
+            playBtn.textContent = '⏸ Pause';
+            animate();
+          }
+        }
+
+        function reset(){
+          cancelAnimationFrame(rafId); rafId = null;
+          playBtn.textContent = '▶️ Play';
+          dir = 1; setPos(50);
+        }
+
+        scrub.addEventListener('input', onInput);
+        playBtn.addEventListener('click', togglePlay);
+        resetBtn.addEventListener('click', reset);
+
+        // 鼠标/触控拖拽（直接在图上拖）
+        wrap.addEventListener('pointerdown', e=>{
+          const rect = wrap.getBoundingClientRect();
+          const move = ev=>{
+            const x = Math.min(Math.max(ev.clientX ?? ev.touches?.[0]?.clientX ?? 0, rect.left), rect.right);
+            const p = ((x - rect.left) / rect.width) * 100;
+            setPos(p);
+          };
+          move(e);
+          const up = ()=>{
+            window.removeEventListener('pointermove', move);
+            window.removeEventListener('pointerup', up);
+          };
+          window.addEventListener('pointermove', move);
+          window.addEventListener('pointerup', up);
+        });
+
+        // 键盘无障碍：左右键微调
+        wrap.tabIndex = 0;
+        wrap.addEventListener('keydown', e=>{
+          if(e.key === 'ArrowLeft'){ setPos(Math.max(0, parseFloat(scrub.value)-2)); }
+          if(e.key === 'ArrowRight'){ setPos(Math.min(100, parseFloat(scrub.value)+2)); }
+        });
+
+        // 初始
+        setPos(50);
+        return wrap;
+      }
+
+      pairs.forEach(([a,b])=> grid.appendChild(makeSlider(a,b)));
+    })();
+
+  </script>
+</body>
+</html>
