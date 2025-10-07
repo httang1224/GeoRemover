@@ -72,7 +72,7 @@
       cursor:pointer; border:1px solid #e5e7eb; background:#f8fafc; color:#111827;
       padding:6px 10px; border-radius:10px; font-weight:600; font-size:12px;
     }
-     /* 虚化播放按钮：默认半透明+轻模糊；悬停或获得焦点时恢复可读性 */
+    
     .ba .btn-mini.play{
       opacity: .35;
       filter: blur(0.3px);
@@ -83,14 +83,13 @@
       opacity: .85;
       filter: none;
     }
-    /* 两个按钮都默认虚化；悬停或获得焦点时恢复 */
+    
     .ba .controls .btn-mini{
       opacity: .35;
       filter: blur(0.3px);
       transition: opacity .15s ease, filter .15s ease;
     }
 
-    /* 整个卡片 hover / 焦点、或单个按钮 hover/focus 时变清晰 */
     .ba:hover .controls .btn-mini,
     .ba:focus-within .controls .btn-mini,
     .ba .controls .btn-mini:hover,
@@ -222,12 +221,11 @@ removal: we first edit the scene geometric representation (in the form of a dept
     }
     // -------- Before/After slider builder --------
     (function(){
-      // 配对：1-2, 3-4, ..., 9-10
+      // match：1-2, 3-4, ..., 9-10
       const pairs = [[1,2],[3,4],[5,6],[7,8],[9,10],[11,12]];
       const grid  = document.getElementById('ba-grid');
       if(!grid) return;
 
-      // 工具：编码非 ASCII 文件名
       const url = n => `asset/${encodeURIComponent(`img${n}.png`)}`;
 
       function makeSlider(aIdx, bIdx){
@@ -237,14 +235,13 @@ removal: we first edit the scene geometric representation (in the form of a dept
           <img class="bot" alt="img${aIdx}" src="${url(aIdx)}" onerror="this.style.display='none'">
           <img class="top" alt="img${bIdx}" src="${url(bIdx)}" onerror="this.style.display='none'">
           <div class="divider"></div>
-          // <div class="label left">img${aIdx}</div>
-          // <div class="label right">img${bIdx}</div>
           <input class="scrubber" type="range" min="0" max="100" value="50" aria-label="transition">
           <div class="controls">
             <button class="btn-mini play">▶️ Play</button>
             <button class="btn-mini reset">Reset</button>
           </div>
         `;
+
 
         const top     = wrap.querySelector('.top');
         const divider = wrap.querySelector('.divider');
@@ -269,7 +266,7 @@ removal: we first edit the scene geometric representation (in the form of a dept
 
         function animate(){
           let p = parseFloat(scrub.value);
-          p += dir * 0.6; // 速度
+          p += dir * 0.6; 
           if(p >= 100){ p=100; dir = -1; }
           if(p <= 0){   p=0;   dir = 1;  }
           setPos(p);
@@ -296,7 +293,7 @@ removal: we first edit the scene geometric representation (in the form of a dept
         playBtn.addEventListener('click', togglePlay);
         resetBtn.addEventListener('click', reset);
 
-        // 鼠标/触控拖拽（直接在图上拖）
+       
         wrap.addEventListener('pointerdown', e=>{
           const rect = wrap.getBoundingClientRect();
           const move = ev=>{
@@ -313,14 +310,14 @@ removal: we first edit the scene geometric representation (in the form of a dept
           window.addEventListener('pointerup', up);
         });
 
-        // 键盘无障碍：左右键微调
+        
         wrap.tabIndex = 0;
         wrap.addEventListener('keydown', e=>{
           if(e.key === 'ArrowLeft'){ setPos(Math.max(0, parseFloat(scrub.value)-2)); }
           if(e.key === 'ArrowRight'){ setPos(Math.min(100, parseFloat(scrub.value)+2)); }
         });
 
-        // 初始
+      
         setPos(50);
         return wrap;
       }
